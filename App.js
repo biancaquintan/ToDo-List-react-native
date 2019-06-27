@@ -21,6 +21,8 @@ export default class App extends Component<Props> {
         {key:"1", desc:"Item 2", done: false}
       ]
     }
+
+    this.inserirItem = this.inserirItem.bind(this)
   }
 
   renderItem(obj){
@@ -29,11 +31,30 @@ export default class App extends Component<Props> {
     )
   }
 
+  inserirItem(){
+    let newItem = {
+      key: this.state.itens.length.toString(),
+      desc: this.state.text,
+      done: false
+    }
+
+    let itens = this.state.itens;
+    itens.push(newItem)
+    this.setState({itens})
+
+    let text = ""
+    this.setState({text})
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.titulo}>ToDo List</Text>
-        <FlatList data={this.state.itens} renderItem={this.renderItem}/>
+        <FlatList data={this.state.itens} renderItem={this.renderItem} extraData={this.state}/>
+        <View>
+          <TextInput value={this.state.text} onChangeText={(text)=>{this.setState({text})}}/>
+          <Button onPress={this.inserirItem} title="ADD"/>
+        </View>
       </View>
     );
   }
